@@ -35,4 +35,14 @@ class M_setup extends CI_Model
         $data = $this->db->get('tb_aksesoris');
         return $data;
     }
+
+    function get_outlet($id = null)
+    {
+        $this->db->select('*');
+        if ($id) {
+            $this->db->where('id', $id);
+        }
+        $data = $this->db->get('tb_outlet');
+        return $data;
+    }
 }

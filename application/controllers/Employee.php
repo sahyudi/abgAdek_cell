@@ -25,6 +25,43 @@ class Employee extends CI_Controller
         $this->load->view('template/main', $data);
     }
 
+    function registration()
+    {
+
+        $this->form_validation->set_rules('name', 'Name', 'required|trim');
+        $this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email|is_unique[users.email]', [
+            'is_unique' => 'This email has already registered!'
+        ]);
+        $this->form_validation->set_rules('password', 'Password', 'required|trim|min_length[3]|matches[password2]', [
+            'matches' => 'Password dont matches!',
+            'min_length' => 'Password to short!'
+        ]);
+        $this->form_validation->set_rules('password2', 'Password', 'required|trim|min_length[3]|matches[password]');
+
+        if ($this->form_validation->run() == false) {
+            $data['active'] = 'employee/registration';
+            $data['title'] = 'Register';
+            $data['subview'] = 'emp/register';
+            // log_r($data['emp']);
+            $this->load->view('template/main', $data);
+            // $this->load->view('emp/register');
+        } else {
+            $data = [
+                'name' => htmlspecialchars($this->input->post('name', true)),
+                'email' => htmlspecialchars($this->input->post('email', true)),
+                'image' => 'default.jpg',
+                'password' => password_hash($this->input->post('password'), PASSWORD_DEFAULT),
+                'group_id' => 1,
+                'outlet_id' => 1,
+                'is_active' => 1,
+                'created_at' => date('Y-m-d H:i:s')
+            ];
+            $this->db->insert('users', $data);
+            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert"> Congratulations your acount has been created. Please Login</div>');
+            redirect('employee');
+        }
+    }
+
     function add()
     {
         $this->db->trans_begin();
@@ -77,6 +114,7 @@ class Employee extends CI_Controller
 
     function agama()
     {
+        check_persmission_pages($this->session->userdata('group_id'), 'employee/agama');
         $data['agama'] = $this->db->get('tb_agama')->result();
         $data['active'] = 'employee/agama';
         $data['title'] = 'Agama';

@@ -25,7 +25,8 @@
                 <div class="card">
                     <div class="card-header">
                         <h3 class="card-title">Data Employee</h3>
-                        <a href="#" class="btn btn-primary float-right btn-sm" data-toggle="modal" onclick="reset_form()" data-target="#modal-material"><i class="fas fa-fw fa-plus"></i> Add Employee</a>
+                        <a href="<?= base_url('employee/registration') ?>" class="btn btn-primary float-right btn-sm"><i class="fas fa-fw fa-plus"></i> Add Employee</a>
+                        <!-- <a href="#" class="btn btn-primary float-right btn-sm" data-toggle="modal" onclick="reset_form()" data-target="#modal-material"><i class="fas fa-fw fa-plus"></i> Add Employee</a> -->
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">

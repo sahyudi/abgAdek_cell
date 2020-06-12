@@ -24,6 +24,8 @@ class Setup extends CI_Controller
 
     function operator()
     {
+        check_persmission_pages($this->session->userdata('group_id'), 'setup/operator');
+
         $data['operator'] = $this->m_setup->get_operator()->result();
         $data['active'] = 'setup/operator';
         $data['title'] = 'Operator';
@@ -100,6 +102,8 @@ class Setup extends CI_Controller
 
     function pulsa()
     {
+        check_persmission_pages($this->session->userdata('group_id'), 'setup/pulsa');
+
         $data['hargaPulsa'] = $this->m_setup->get_pulsa()->result();
         $data['operator'] = $this->m_setup->get_operator()->result();
         $data['active'] = 'setup/pulsa';
@@ -157,6 +161,8 @@ class Setup extends CI_Controller
 
     function aksesoris()
     {
+        check_persmission_pages($this->session->userdata('group_id'), 'setup/aksesoris');
+
         $data['aksesoris'] = $this->m_setup->get_aksesoris()->result();
         $data['active'] = 'setup/asksesoris';
         $data['title'] = 'Aksesoris';
@@ -209,5 +215,62 @@ class Setup extends CI_Controller
             $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Data aksesoris gagal dihapus !</div>');
         }
         redirect('setup/aksesoris');
+    }
+
+    function outlet()
+    {
+        check_persmission_pages($this->session->userdata('group_id'), 'setup/outlet');
+
+        $data['outlet'] = $this->m_setup->get_outlet()->result();
+        $data['active'] = 'setup/outlet';
+        $data['title'] = 'Outlet';
+        $data['subview'] = 'setup/outlet';
+        $this->load->view('template/main', $data);
+    }
+
+    function add_outlet()
+    {
+        $this->db->trans_begin();
+        $id = $this->input->post('id');
+
+        $data = [
+            'nama' => $this->input->post('nama'),
+            'no_telp' => $this->input->post('no_telp'),
+            'alamat' => $this->input->post('alamat'),
+            'update_at' => date('Y-m-d H:i:s'),
+        ];
+
+        if ($id) {
+            $this->db->update('tb_outlet', $data, ['id' => $id]);
+            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Data outlet berhasil diperbarui !</div>');
+        } else {
+            $this->db->insert('tb_outlet', $data);
+            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Data outlet berhasil disimpan !</div>');
+        }
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+        } else {
+            $this->db->trans_commit();
+        }
+        redirect('setup/outlet');
+    }
+
+    function get_outlet($id)
+    {
+        if ($id) {
+            $data = $this->db->get_where('tb_outlet', ['id' => $id])->row();
+            echo json_encode($data);
+        }
+    }
+
+    function delete_outlet($id)
+    {
+        if ($this->db->delete('tb_outlet', ['id' => $id])) {
+            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Data outlet berhasil dihapus !</div>');
+        } else {
+            $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Data outlet gagal dihapus !</div>');
+        }
+        redirect('setup/outlet');
     }
 }

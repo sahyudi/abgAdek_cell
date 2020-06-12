@@ -17,6 +17,8 @@ class Transaction extends CI_Controller
 
     function transfer()
     {
+        check_persmission_pages($this->session->userdata('group_id'), 'transaction/transfer');
+
         $data['transfer'] = $this->m_transaction->get_transfer()->result();
         $data['active'] = 'transaction/transfer';
         $data['title'] = 'Transfer';
