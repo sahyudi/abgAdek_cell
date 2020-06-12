@@ -10,134 +10,77 @@ class Transaction extends CI_Controller
         if (!$this->session->userdata('email')) {
             redirect('auth');
         }
-        $this->load->model('m_material');
+        $this->load->model('m_transaction');
     }
 
-    public function index()
+
+
+    function transfer()
     {
-        $data['material'] = $this->m_material->get_material()->result();
-        $data['active'] = 'material';
-        $data['title'] = 'Material';
-        $data['subview'] = 'material/stock';
+        $data['transfer'] = $this->m_transaction->get_transfer()->result();
+        $data['active'] = 'transaction/transfer';
+        $data['title'] = 'Transfer';
+        $data['subview'] = 'transaction/transfer';
         $this->load->view('template/main', $data);
     }
 
-    function add()
+    function add_transfer()
     {
         $this->db->trans_begin();
-        $harga_beli = $this->input->post('harga_beli');
-        $harga_jual = $this->input->post('harga_jual');
-        $keterangan = $this->input->post('keterangan');
-        $upah_laut = $this->input->post('upah_laut');
-        $upah_darat = $this->input->post('upah_darat');
 
         $id = $this->input->post('id');
         $data = [
+            'no_transaksi' => $this->input->post('no_transaksi'),
             'nama' => $this->input->post('nama'),
-            'satuan' => $this->input->post('satuan'),
-            'harga_beli' => replace_angka($harga_beli),
-            'harga_jual' => replace_angka($harga_jual),
-            'keterangan' => replace_angka($keterangan),
-            'upah_laut' => replace_angka($upah_laut),
-            'upah_darat' => replace_angka($upah_darat),
-            'is_active' => 1
+            'bank' => $this->input->post('bank'),
+            'no_rekening' => $this->input->post('no_rekening'),
+            'nominal' => $this->input->post('nominal'),
+            'admin' => $this->input->post('admin'),
+            'keterangan' => $this->input->post('keterangan'),
+            'update_at' => date('Y-m-d H:i:s')
         ];
 
+        // log_r($data);
         if ($id) {
-            $data['update_at'] = date('Y-m-d H:i:s');
-            $this->db->update('material', $data, ['id' => $id]);
-            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Material berhasil diperbarui !</div>');
+            $this->db->update('tb_trans_transfer', $data, ['id' => $id]);
+            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Transfer berhasil diperbarui !</div>');
         } else {
-            $data['created_at'] = date('Y-m-d H:i:s');
-            $data['created_user'] = $this->session->userdata('id');
-            $this->db->insert('material', $data);
-            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Material baru berhasil disimpan !</div>');
+            $this->db->insert('tb_trans_transfer', $data);
+            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Transfer baru berhasil disimpan !</div>');
         }
 
         if ($this->db->trans_status() === FALSE) {
             $this->db->trans_rollback();
         } else {
             $this->db->trans_commit();
+            $last_id = $this->db->insert_id();
+            $transfer['print'] = $this->m_transaction->get_transfer($last_id)->row();
+            $this->load->view('transaction/print_transfer', $transfer);
         }
-        redirect('material');
+        // redirect('transaction/transfer');
     }
 
-
-    function delete($id)
+    function get_transfer($id)
     {
         if ($id) {
-            $this->db->delete('material', ['id' => $id]);
-        }
-        redirect('material');
-    }
-
-
-    function get_data($id)
-    {
-        if ($id) {
-            $data = $this->m_material->get_material($id)->row();
+            $data = $this->m_transaction->get_transfer($id)->row();
             echo json_encode($data);
         }
     }
 
-    function kartu_stock()
+    function print_transfer($id)
     {
-        $this->form_validation->set_rules('start_date', 'Tanggal Mulai', 'trim|required');
-        $this->form_validation->set_rules('end_date', 'Tanggal Akhir', 'trim|required');
-        $this->form_validation->set_rules('material', 'Material', 'trim|required');
-
-
-        if ($this->form_validation->run() == false) {
-            $data['kartu_stock'] = null;
-        } else {
-            $start_date = $this->input->post('start_date');
-            $end_date = $this->input->post('end_date');
-            $material = $this->input->post('material');
-            $data['kartu_stock'] = $this->m_material->get_kartu_stock($start_date, $end_date, $material)->result();
-        }
-        $data['material'] = $this->m_material->get_material()->result();
-        $data['active'] = 'material/kartu_stock';
-        $data['title'] = 'Material';
-        $data['subview'] = 'material/kartu_stock';
-        $this->load->view('template/main', $data);
+        $transfer['print'] = $this->m_transaction->get_transfer($id)->row();
+        $this->load->view('transaction/print_transfer', $transfer);
     }
 
-    function report_stock()
+    function delete_transfer($id)
     {
-        check_persmission_pages($this->session->userdata('group_id'), 'material/report_stock');
-        $this->form_validation->set_rules('start_date', 'Tanggal Mulai', 'trim|required');
-        $this->form_validation->set_rules('end_date', 'Tanggal Akhir', 'trim|required');
-        $this->form_validation->set_rules('material', 'Material', 'trim|required');
-
-
-        if ($this->form_validation->run() == false) {
-            $data['kartu_stock'] = $this->m_material->get_report_stock()->result();
-            $start_date = '';
-            $end_date = '';
-            $material = '';
+        if ($this->db->delete('tb_trans_transfer', ['id' => $id])) {
+            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Data transfer berhasil dihapus !</div>');
         } else {
-            $start_date = $this->input->post('start_date');
-            $end_date = $this->input->post('end_date');
-            $material = $this->input->post('material');
-            $data['kartu_stock'] = $this->m_material->get_report_stock($start_date, $end_date, $material)->result();
+            $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Data transfer gagal dihapus !</div>');
         }
-        $data['start_date'] = $start_date;
-        $data['end_date'] = $end_date;
-        $data['material_id'] = $material;
-        $data['material'] = $this->m_material->get_material()->result();
-        $data['active'] = 'material/report_stock';
-        $data['title'] = 'Report Material';
-        $data['subview'] = 'material/report';
-        $this->load->view('template/main', $data);
-    }
-
-    function print_report($start_date, $end_date, $material_id)
-    {
-
-        $data['start_date'] = $start_date;
-        $data['end_date'] = $end_date;
-        $data['material_id'] = $material_id;
-        $data['kartu_stock'] = $this->m_material->get_report_stock($start_date, $end_date, $material_id)->result();
-        $this->load->view('material/print_report', $data);
+        redirect('transaction/transfer');
     }
 }

@@ -155,11 +155,11 @@ class Setup extends CI_Controller
         redirect('setup/pulsa');
     }
 
-    function asksesoris()
+    function aksesoris()
     {
         $data['aksesoris'] = $this->m_setup->get_aksesoris()->result();
         $data['active'] = 'setup/asksesoris';
-        $data['title'] = 'Pulsa';
+        $data['title'] = 'Aksesoris';
         $data['subview'] = 'setup/aksesoris';
         $this->load->view('template/main', $data);
     }
@@ -189,6 +189,24 @@ class Setup extends CI_Controller
             $this->db->trans_rollback();
         } else {
             $this->db->trans_commit();
+        }
+        redirect('setup/aksesoris');
+    }
+
+    function get_aksesoris($id)
+    {
+        if ($id) {
+            $data = $this->db->get_where('tb_aksesoris', ['id' => $id])->row();
+            echo json_encode($data);
+        }
+    }
+
+    function delete_aksesoris($id)
+    {
+        if ($this->db->delete('tb_aksesoris', ['id' => $id])) {
+            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Data aksesoris berhasil dihapus !</div>');
+        } else {
+            $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Data aksesoris gagal dihapus !</div>');
         }
         redirect('setup/aksesoris');
     }
