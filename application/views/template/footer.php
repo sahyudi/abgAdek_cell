@@ -6,7 +6,7 @@
 
 <!-- Main Footer -->
 <footer class="main-footer">
-    <strong>Copyright &copy; 2020 <a href="https://tuahsakti.com">Tuah Sakti</a>.</strong>
+    <strong>Copyright &copy; 2020 <a href="https://tuahsakti.com">ABG ADEK CELL</a>.</strong>
     <div class="float-right d-none d-sm-inline-block">
         <b>Version</b> 1.0.0
     </div>
@@ -18,10 +18,6 @@
 <script type="text/javascript">
     function button_back() {
         window.history.go(-1);
-    }
-
-    function confirm_delete() {
-        return confirm('Apakah anda yakin akan menghapu data tersebut ?');
     }
 
     function addCommas_general(nStr) {

@@ -15,9 +15,7 @@ class Employee extends CI_Controller
     public function index()
     {
         $data['emp'] = $this->m_emp->get_emp()->result();
-        $data['gol_darah'] = $this->db->get('tb_gol_darah')->result();
-        $data['pendidikan'] = $this->db->get('tb_pendidikan')->result();
-        $data['agama'] = $this->db->get('tb_agama')->result();
+        $data['outlet'] = $this->db->get('tb_outlet')->result();
         $data['active'] = 'employee';
         $data['title'] = 'Employee';
         $data['subview'] = 'emp/index';
@@ -29,6 +27,11 @@ class Employee extends CI_Controller
     {
 
         $this->form_validation->set_rules('name', 'Name', 'required|trim');
+        $this->form_validation->set_rules('group_id', 'Group', 'required|trim');
+        $this->form_validation->set_rules('outlet_id', 'Outlet', 'required|trim');
+        $this->form_validation->set_rules('no_ktp', 'No KTP', 'required|trim');
+        $this->form_validation->set_rules('no_hp', 'No HP', 'required|trim');
+        $this->form_validation->set_rules('alamat', 'Alamat', 'required|trim');
         $this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email|is_unique[users.email]', [
             'is_unique' => 'This email has already registered!'
         ]);
@@ -41,7 +44,7 @@ class Employee extends CI_Controller
         if ($this->form_validation->run() == false) {
             $data['group'] = $this->db->get('groups')->result();
             $data['outlet'] = $this->db->get('tb_outlet')->result();
-            $data['active'] = 'employee/registration';
+            $data['active'] = 'employee';
             $data['title'] = 'Register';
             $data['subview'] = 'emp/register';
             // log_r($data['emp']);
@@ -62,7 +65,8 @@ class Employee extends CI_Controller
                 'created_at' => date('Y-m-d H:i:s')
             ];
             $this->db->insert('users', $data);
-            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert"> Congratulations your acount has been created. Please Login</div>');
+            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert"> Anda telah menambahkan satu user baru</div>');
+            // $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert"> Congratulations your acount has been created. Please Login</div>');
             redirect('employee');
         }
     }
@@ -73,22 +77,18 @@ class Employee extends CI_Controller
 
         $id = $this->input->post('id');
         $data = [
-            'nama' => $this->input->post('nama'),
-            'agama' => $this->input->post('agama'),
-            'jenis_kel' => $this->input->post('jenis_kel')[0],
-            'tgl_lahir' => $this->input->post('tgl_lahir'),
-            'alamat' => $this->input->post('alamat'),
-            'pendidikan' => $this->input->post('pendidikan'),
-            'no_telp' => $this->input->post('no_telp'),
-            'no_ktp' => $this->input->post('no_ktp'),
-            'gol_darah' => $this->input->post('gol_darah'),
+            'name' => htmlspecialchars($this->input->post('name', true)),
+            'outlet_id' => htmlspecialchars($this->input->post('outlet_id', true)),
+            'no_ktp' => htmlspecialchars($this->input->post('no_ktp', true)),
+            'no_hp' => htmlspecialchars($this->input->post('no_hp', true)),
+            'alamat' => htmlspecialchars($this->input->post('alamat', true)),
         ];
         // log_r($data);
         if ($id) {
-            $this->db->update('tb_employee', $data, ['id' => $id]);
+            $this->db->update('users', $data, ['id' => $id]);
             $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Employee berhasil diperbarui !</div>');
         } else {
-            $this->db->insert('tb_employee', $data);
+            $this->db->insert('users', $data);
             $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Employee baru berhasil disimpan !</div>');
         }
 
@@ -104,7 +104,7 @@ class Employee extends CI_Controller
     function get_employee($id)
     {
         if ($id) {
-            $data = $this->db->get_where('tb_employee', ['id' => $id])->row();
+            $data = $this->db->get_where('users', ['id' => $id])->row();
             echo json_encode($data);
         }
     }

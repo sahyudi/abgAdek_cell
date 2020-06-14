@@ -177,7 +177,7 @@ class Setting extends CI_Controller
 
         $data['menu'] = $this->m_setting->get_menu()->result();
         $data['group_id'] = $id;
-        $data['active'] = 'setting/privelage';
+        $data['active'] = 'setting/group';
         $data['title'] = 'Menu';
         $data['subview'] = 'setting/privelage';
         $this->load->view('template/main', $data);

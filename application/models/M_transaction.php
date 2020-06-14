@@ -35,4 +35,12 @@ class M_transaction extends CI_Model
         $data = $this->db->get('tb_aksesoris');
         return $data;
     }
+
+    function get_transPulsa()
+    {
+        $this->db->select('A.*, B.nama as operator');
+        $this->db->join('tb_operator B', 'A.operator_id = B.id', 'left');
+        $data = $this->db->get('tb_trans_pulsa A');
+        return $data;
+    }
 }

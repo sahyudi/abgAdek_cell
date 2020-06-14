@@ -52,7 +52,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <?= form_error('name', '<small class="text-danger">', '</small>'); ?>
+                                    <?= form_error('no_ktp', '<small class="text-danger">', '</small>'); ?>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="" class="form-group mt-3">No HP</label>
@@ -64,7 +64,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <?= form_error('name', '<small class="text-danger">', '</small>'); ?>
+                                    <?= form_error('no_hp', '<small class="text-danger">', '</small>'); ?>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="" class="form-group mt-3">Alamat</label>
@@ -77,7 +77,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <?= form_error('name', '<small class="text-danger">', '</small>'); ?>
+                                    <?= form_error('alamat', '<small class="text-danger">', '</small>'); ?>
                                 </div>
 
                                 <div class="col-md-6">

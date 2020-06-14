@@ -164,7 +164,7 @@ class Setup extends CI_Controller
         check_persmission_pages($this->session->userdata('group_id'), 'setup/aksesoris');
 
         $data['aksesoris'] = $this->m_setup->get_aksesoris()->result();
-        $data['active'] = 'setup/asksesoris';
+        $data['active'] = 'setup/aksesoris';
         $data['title'] = 'Aksesoris';
         $data['subview'] = 'setup/aksesoris';
         $this->load->view('template/main', $data);
