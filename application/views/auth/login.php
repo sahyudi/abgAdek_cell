@@ -39,7 +39,7 @@
                             </div>
                         </div>
                     </div>
-                    <?= form_error('email', '<small class="text-danger mb-3">', '</small><br>'); ?>
+                    <?= form_error('email', '<small class="text-danger mb-3">', '</small>'); ?>
                     <div class="input-group mt-3">
                         <input type="password" class="form-control" name="password" id="password" placeholder="Password">
                         <div class="input-group-append">

@@ -39,6 +39,8 @@ class Employee extends CI_Controller
         $this->form_validation->set_rules('password2', 'Password', 'required|trim|min_length[3]|matches[password]');
 
         if ($this->form_validation->run() == false) {
+            $data['group'] = $this->db->get('groups')->result();
+            $data['outlet'] = $this->db->get('tb_outlet')->result();
             $data['active'] = 'employee/registration';
             $data['title'] = 'Register';
             $data['subview'] = 'emp/register';
@@ -51,8 +53,11 @@ class Employee extends CI_Controller
                 'email' => htmlspecialchars($this->input->post('email', true)),
                 'image' => 'default.jpg',
                 'password' => password_hash($this->input->post('password'), PASSWORD_DEFAULT),
-                'group_id' => 1,
-                'outlet_id' => 1,
+                'group_id' => htmlspecialchars($this->input->post('group_id', true)),
+                'outlet_id' => htmlspecialchars($this->input->post('outlet_id', true)),
+                'no_ktp' => htmlspecialchars($this->input->post('no_ktp', true)),
+                'no_hp' => htmlspecialchars($this->input->post('no_hp', true)),
+                'alamat' => htmlspecialchars($this->input->post('alamat', true)),
                 'is_active' => 1,
                 'created_at' => date('Y-m-d H:i:s')
             ];

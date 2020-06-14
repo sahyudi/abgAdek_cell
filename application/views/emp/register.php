@@ -27,58 +27,158 @@
                         <h3 class="card-title">Register Employee</h3>
                     </div>
                     <!-- /.card-header -->
-                    <div class="card-body">
-                        <form action="<?= base_url('employee/registration') ?>" method="post">
+                    <form action="<?= base_url('employee/registration') ?>" method="post">
+                        <div class="card-body">
                             <div class="row">
-                                <div class="input-group col-md-6 mt-3">
-                                    <input type="text" name="name" id="name" class="form-control" placeholder="Full name" value="<?= set_value('name') ?>">
-                                    <div class="input-group-append">
-                                        <div class="input-group-text">
-                                            <span class="fas fa-user"></span>
+                                <div class="col-md-6">
+                                    <label for="" class="form-group">Nama</label>
+                                    <div class="input-group">
+                                        <input type="text" name="name" id="name" class="form-control" placeholder="Full name" value="<?= set_value('name') ?>">
+                                        <div class="input-group-append">
+                                            <div class="input-group-text">
+                                                <span class="fas fa-user"></span>
+                                            </div>
                                         </div>
                                     </div>
+                                    <?= form_error('name', '<small class="text-danger">', '</small>'); ?>
                                 </div>
-                                <?= form_error('name', '<small class="text-danger">', '</small>'); ?>
-                                <div class="input-group col-md-6 mt-3">
-                                    <input type="email" name="email" id="email" class="form-control" value="<?= set_value('email') ?>" placeholder="Email">
-                                    <div class="input-group-append">
-                                        <div class="input-group-text">
-                                            <span class="fas fa-envelope"></span>
+                                <div class="col-md-6">
+                                    <label for="" class="form-group">No KTP</label>
+                                    <div class="input-group">
+                                        <input type="text" name="no_ktp" id="no_ktp" class="form-control" placeholder="No KTP" value="<?= set_value('no_ktp') ?>">
+                                        <div class="input-group-append">
+                                            <div class="input-group-text">
+                                                <span class="fas fa-id-card"></span>
+                                            </div>
                                         </div>
                                     </div>
+                                    <?= form_error('name', '<small class="text-danger">', '</small>'); ?>
                                 </div>
-                                <?= form_error('email', '<small class="text-danger">', '</small>'); ?>
-                                <div class="input-group col-md-6 mt-3">
-                                    <input type="password" name="password" id="password" class="form-control" placeholder="Password">
-                                    <div class="input-group-append">
-                                        <div class="input-group-text">
-                                            <span class="fas fa-lock"></span>
+                                <div class="col-md-6">
+                                    <label for="" class="form-group mt-3">No HP</label>
+                                    <div class="input-group">
+                                        <input type="text" name="no_hp" id="no_hp" class="form-control" placeholder="No HP" value="<?= set_value('no_hp') ?>">
+                                        <div class="input-group-append">
+                                            <div class="input-group-text">
+                                                <span class="fas fa-phone"></span>
+                                            </div>
                                         </div>
                                     </div>
+                                    <?= form_error('name', '<small class="text-danger">', '</small>'); ?>
                                 </div>
-                                <?= form_error('password', '<small class="text-danger">', '</small>'); ?>
-                                <div class="input-group col-md-6 mt-3">
-                                    <input type="password" name="password2" id="password2" class="form-control" placeholder="Retype password">
-                                    <div class="input-group-append">
-                                        <div class="input-group-text">
-                                            <span class="fas fa-lock"></span>
+                                <div class="col-md-6">
+                                    <label for="" class="form-group mt-3">Alamat</label>
+                                    <div class="input-group">
+                                        <textarea name="alamat" id="alamat" rows="1" class="form-control"><?= set_value('alamat') ?></textarea>
+                                        <!-- <input type="text" name="no_hp" id="no_hp" class="form-control" placeholder="No HP" value="<?= set_value('no_hp') ?>"> -->
+                                        <div class="input-group-append">
+                                            <div class="input-group-text">
+                                                <span class="fas fa-map-marker"></span>
+                                            </div>
                                         </div>
                                     </div>
+                                    <?= form_error('name', '<small class="text-danger">', '</small>'); ?>
                                 </div>
 
+                                <div class="col-md-6">
+                                    <label for="" class="form-group mt-3">E-mail</label>
+                                    <div class="input-group ">
+                                        <input type="email" name="email" id="email" class="form-control" value="<?= set_value('email') ?>" placeholder="Email">
+                                        <div class="input-group-append">
+                                            <div class="input-group-text">
+                                                <span class="fas fa-envelope"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <?= form_error('email', '<small class="text-danger">', '</small>'); ?>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="" class="form-group mt-3">Profile</label>
+                                    <div class="input-group ">
+                                        <input type="file" name="profile" id="profile" class="form-control" placeholder="Profile" value="">
+                                        <div class="input-group-append">
+                                            <div class="input-group-text">
+                                                <span class="fas fa-user-circle"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <?= form_error('profile', '<small class="text-danger">', '</small>'); ?>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="" class="form-group mt-3">Password</label>
+                                    <div class="input-group">
+                                        <input type="password" name="password" id="password" class="form-control" placeholder="Password">
+                                        <div class="input-group-append">
+                                            <div class="input-group-text">
+                                                <span class="fas fa-lock"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <?= form_error('password', '<small class="text-danger">', '</small>'); ?>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="" class="form-group mt-3">Re Password</label>
+                                    <div class="input-group">
+                                        <input type="password" name="password2" id="password2" class="form-control" placeholder="Retype password">
+                                        <div class="input-group-append">
+                                            <div class="input-group-text">
+                                                <span class="fas fa-lock"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="" class="form-group mt-3">User Group</label>
+                                    <div class="input-group">
+                                        <select name="group_id" id="group_id" class="form-control select2">
+                                            <option value=""></option>
+                                            <?php foreach ($group as $key => $value) { ?>
+                                                <option value="<?= $value->id ?>" <?= (set_value('group_id') == $value->id) ? 'selected' : ''; ?>><?= $value->group_name ?></option>
+                                            <?php } ?>
+                                        </select>
+                                        <!-- <input type="password" name="group_id" id="group_id" class="form-control" placeholder="Retype password"> -->
+                                        <div class="input-group-append">
+                                            <div class="input-group-text">
+                                                <span class="fas fa-lock"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <?= form_error('group_id', '<small class="text-danger">', '</small>'); ?>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="" class="form-group mt-3">Outlet</label>
+                                    <div class="input-group">
+                                        <select name="outlet_id" id="outlet_id" class="form-control select2">
+                                            <option value=""></option>
+                                            <?php foreach ($outlet as $key => $value) { ?>
+                                                <option value="<?= $value->id ?>" <?= (set_value('outlet_id') == $value->id) ? 'selected' : ''; ?>><?= $value->nama ?></option>
+                                            <?php } ?>
+                                        </select>
+                                        <div class="input-group-append">
+                                            <div class="input-group-text">
+                                                <span class="fas fa-lock"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <?= form_error('outlet_id', '<small class="text-danger">', '</small>'); ?>
+                                </div>
                             </div>
-                            <div class="row mt-3">
-                                <div class="col-8">
+                            <div></div>
 
+                        </div>
+                        <div class="card-footer">
+                            <div class="row mt-3">
+                                <div class="col-6">
+                                    <a href="<?= base_url('employee') ?>" class="btn btn-danger btn-block">Back</a>
                                 </div>
                                 <!-- /.col -->
-                                <div class="col-4">
+                                <div class="col-6">
                                     <button type="submit" class="btn btn-primary btn-block">Register</button>
                                 </div>
                                 <!-- /.col -->
                             </div>
-                        </form>
-                    </div>
+                        </div>
+                    </form>
                     <!-- /.card-body -->
                 </div>
                 <!-- /.card -->
