@@ -61,7 +61,7 @@
                         </div>
                         <div class="card-footer justify-content-between">
                             <a href="<?= base_url('home') ?>" class="btn btn-default btn-sm float-left">Close</a>
-                            <button type="submit" class="btn btn-primary btn-sm float-right"><i class="fas fa-fw fa-search"></i> Save</button>
+                            <button type="submit" class="btn btn-primary btn-sm float-right"><i class="fas fa-fw fa-search"></i> Search</button>
                         </div>
                     </form>
                 </div>
@@ -69,7 +69,7 @@
                 <div class="card">
                     <div class="card-header">
                         <h3 class="card-title">Form Pencarian</h3>
-                        <a href="<?= base_url('report/print_penjualan') ?>" class="btn btn-primary float-right btn-sm"><i class="fas fa-fw fa-print"></i> Print</a>
+                        <a href="<?= base_url('report/print_penjualan/') . $dari . '/' . $sampai . '/' . $item_id . '/' . $outlet_id ?>" class="btn btn-primary float-right btn-sm"><i class="fas fa-fw fa-print"></i> Print</a>
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">

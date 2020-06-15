@@ -50,6 +50,16 @@ class Report extends CI_Controller
         $this->load->view('template/main', $data);
     }
 
+    function print_penjualan($fromDate, $toDate, $item_id, $outlet)
+    {
+        $data['transaksi'] = $this->m_report->get_penjualan($fromDate, $toDate, $item_id, $outlet)->result();
+        $data['dari'] = $fromDate;
+        $data['sampai'] = $toDate;
+        $data['outlet_id'] = $outlet;
+        $data['item_id'] = $item_id;
+        $this->load->view('report/print_report', $data);
+    }
+
     function add_transfer()
     {
         $this->db->trans_begin();
