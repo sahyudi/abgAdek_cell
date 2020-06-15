@@ -187,7 +187,16 @@ class Setup extends CI_Controller
             $this->db->update('tb_aksesoris', $data, ['id' => $id]);
             $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Data aksesoris berhasil diperbarui !</div>');
         } else {
+
             $this->db->insert('tb_aksesoris', $data);
+            $last_id = $this->db->insert_id();
+            $dataStock = [
+                'aksesoris_id' => $last_id,
+                'stock' => 0,
+                'update_at' => date('Y-m-d H:i:s')
+            ];
+            $this->db->insert('tb_stock_aksesoris', $dataStock);
+            // input stock baru
             $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Data aksesoris berhasil disimpan !</div>');
         }
 

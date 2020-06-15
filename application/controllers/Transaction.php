@@ -152,4 +152,89 @@ class Transaction extends CI_Controller
             echo json_encode($data);
         }
     }
+
+    function aksesoris()
+    {
+        check_persmission_pages($this->session->userdata('group_id'), 'transaction/aksesoris');
+
+        $data['stock'] = $this->m_transaction->get_stocksAksesoris()->result();
+        $data['stock'] = $this->m_transaction->get_stocksAksesoris()->result();
+        $data['transaksi'] = $this->m_transaction->get_transAksesoris()->result();
+        $data['item'] = $this->m_transaction->get_aksesoris()->result();
+        $data['outlet'] = $this->db->get('tb_outlet')->result();
+        // log_r($data['item']);
+        $data['active'] = 'transaction/aksesoris';
+        $data['title'] = 'Trans Aksesoris';
+        $data['subview'] = 'transaction/aksesoris';
+        $this->load->view('template/main', $data);
+    }
+
+    function add_stock()
+    {
+        $id = $this->input->post('id');
+        $data = [
+            'tanggal' => $tanggal = $this->input->post('tanggal'),
+            'no_transaksi' => htmlspecialchars($this->input->post('no_transaksi', true)),
+            'aksesoris_id' => $item_id = htmlspecialchars($this->input->post('aksesoris', true)),
+            'quantity' => $quantity = htmlspecialchars($this->input->post('quantity', true)),
+            'harga' => htmlspecialchars($this->input->post('harga', true)),
+            'outlet_id' => htmlspecialchars($this->input->post('outlet_id', true)),
+        ];
+
+        $get = $this->db->get_where('tb_stock_aksesoris', ['aksesoris_id' => $item_id])->row();
+        $update_stock = [
+            'stock' => replace_angka($get->stock) + replace_angka($quantity),
+            'update_at' => $tanggal,
+        ];
+        // log_r($update_stock);
+        if ($id) {
+            $this->db->update('tb_trans_pengadaan', $data, ['id' => $id]);
+            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Pengadaan berhasil diperbarui !</div>');
+        } else {
+            $this->db->insert('tb_trans_pengadaan', $data);
+            $this->db->update('tb_stock_aksesoris', $update_stock, ['aksesoris_id' => $item_id]);
+            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Pengadaan berhasil disimpan !</div>');
+        }
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+        } else {
+            $this->db->trans_commit();
+        }
+
+        redirect('transaction/aksesoris');
+    }
+
+    function add_penjualan()
+    {
+        $data = [
+            'tanggal' => $tanggal = $this->input->post('tanggal_penjualan'),
+            'no_transaksi' => htmlspecialchars($this->input->post('no_penjualan', true)),
+            'aksesoris_id' => $item_id = htmlspecialchars($this->input->post('item_penjualan', true)),
+            'quantity' => $quantity = htmlspecialchars($this->input->post('qty_jual', true)),
+            'harga' => htmlspecialchars($this->input->post('harga_jual', true)),
+            'outlet_id' => htmlspecialchars($this->input->post('outlet_penjualan', true)),
+            'keterangan' => htmlspecialchars($this->input->post('keterangan', true)),
+        ];
+
+        $get = $this->db->get_where('tb_stock_aksesoris', ['aksesoris_id' => $item_id])->row();
+        $update_stock = [
+            'stock' => replace_angka($get->stock) - replace_angka($quantity),
+            'update_at' => $tanggal,
+        ];
+
+        $this->db->insert('tb_trans_penjualan', $data);
+        $this->db->update('tb_stock_aksesoris', $update_stock, ['aksesoris_id' => $item_id]);
+
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Penjualan gagal disimpan !</div>');
+        } else {
+            $this->db->trans_commit();
+            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Penjualan berhasil disimpan !</div>');
+        }
+
+        redirect('transaction/aksesoris');
+    }
 }
